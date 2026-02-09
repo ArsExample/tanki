@@ -22,8 +22,13 @@ class Play_state:
         self.walls.add(self.wall3)
         self.walls.add(self.wall4)
 
+        self.bullets = pygame.sprite.Group()
+
     def update(self):
         self.player.update(self.walls, self.shadow)
+        self.bullets.update()
+
+        pygame.sprite.groupcollide(self.bullets, self.walls, True, False)  # тут типа col = groupcollide и внутри должны быть спрайты
 
         # msg = str(player.rect.x) + "," + str(player.rect.y)
         # client.send(msg.encode())
@@ -33,6 +38,7 @@ class Play_state:
         screen.fill((0, 0, 0))
 
         self.walls.draw(screen)
+        self.bullets.draw(screen)
         
         for i in range(32):
             pygame.draw.line(screen, (255, 255, 255), (50*(i+1), 0), (50*(i+1), HEIGHT), 1)
@@ -51,6 +57,9 @@ class Play_state:
                 self.player.move = self.player.directions[4]
             elif event.key == pygame.K_d:
                 self.player.move = self.player.directions[2]
+
+            if event.key == pygame.K_SPACE:
+                self.bullets.add(Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction))
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
                 if self.player.move == self.player.directions[3]:

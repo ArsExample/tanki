@@ -1,5 +1,4 @@
 # основной класс с игровым циклом
-# запускаю тут loop в котором вызываю update и/или draw у текущего state
 import pygame
 from config import WIDTH, HEIGHT, FPS
 
@@ -23,12 +22,9 @@ class Game:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q:
                             running = False
-                    # типа self.cur_state.handle_event(event)
                     self.current_state.handle_event(event)
 
-            # типа self.cur_state.update()
             self.current_state.update()
             self.current_state.draw(self.screen)
-            # типа self.cur_state.draw()
 
             pygame.display.flip()
