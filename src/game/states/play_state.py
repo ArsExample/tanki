@@ -1,5 +1,7 @@
 # игра
 import pygame
+
+from network import client
 from config import WIDTH, HEIGHT
 from ..objects import *
 
@@ -24,16 +26,24 @@ class Play_state:
 
         self.bullets = pygame.sprite.Group()
 
+        # test
+        self.client = client.Client()
+        self.client.start_recieve()
+
     def update(self):
+        while not self.client.msg_queue.empty():
+            d = self.client.msg_queue.get().split(",")
+            self.player2.rect.x = int(d[0])
+            self.player2.rect.x = int(d[1])
+
         self.player.update(self.walls, self.shadow)
         self.bullets.update()
 
         pygame.sprite.groupcollide(self.bullets, self.walls, True, False)  # тут типа col = groupcollide и внутри должны быть спрайты
 
-        # msg = str(player.rect.x) + "," + str(player.rect.y)
-        # client.send(msg.encode())
+        msg = str(self.player.rect.x) + "," + str(self.player.rect.y)
+        self.client.send_msg(msg)
         
-
     def draw(self, screen):
         screen.fill((0, 0, 0))
 
