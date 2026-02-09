@@ -22,10 +22,14 @@ class Client:
     def start_recieve(self):
         # запустить поток
         self.recieve_thread = threading.Thread(target=self.recieve_loop)
+        self.recieve_thread.start()
 
     def stop_recieve(self):
         self.stop_recieve_loop = True
-        
+
+    def recieve_msg(self):
+        data = self.sock.recv(1024).decode()
+        return data
 
     def recieve_loop(self):
         while not self.stop_recieve_loop:
@@ -36,4 +40,4 @@ class Client:
         print("Recieving stopped")
 
     def send_msg(self, msg):
-        self.sock.send(msg.encoded())
+        self.sock.send(msg.encode())

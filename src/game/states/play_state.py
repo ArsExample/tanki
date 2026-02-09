@@ -1,5 +1,6 @@
 # игра
 import pygame
+import json
 
 from network import client
 from config import WIDTH, HEIGHT
@@ -26,15 +27,21 @@ class Play_state:
 
         self.bullets = pygame.sprite.Group()
 
-        # test
+        # network
         self.client = client.Client()
+        self.client.connect()
+        data = json.loads(self.client.recieve_msg())
+        self.player.rect.x = int(data["x1"])
+        self.player.rect.y = int(data["y1"])
+        self.player2.rect.x = int(data["x2"])
+        self.player2.rect.y = int(data["y2"])
         self.client.start_recieve()
 
     def update(self):
         while not self.client.msg_queue.empty():
             d = self.client.msg_queue.get().split(",")
             self.player2.rect.x = int(d[0])
-            self.player2.rect.x = int(d[1])
+            self.player2.rect.y = int(d[1])
 
         self.player.update(self.walls, self.shadow)
         self.bullets.update()
