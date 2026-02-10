@@ -63,8 +63,9 @@ class Play_state:
 
         pygame.sprite.groupcollide(self.bullets1, self.walls, True, False)  
         pygame.sprite.groupcollide(self.bullets2, self.walls, True, False)  
-        collided = pygame.sprite.groupcollide(self.player1_group, self.walls, True, True)  
-        print(collided)
+        collided = pygame.sprite.groupcollide(self.player1_group, self.bullets2, True, True)  
+        collided2 = pygame.sprite.groupcollide(self.player2_group, self.bullets1, True, True)  
+        print(collided, collided2)
 
         # msg = str(self.player.rect.x) + "," + str(self.player.rect.y)
         # self.client.send_msg(msg)
