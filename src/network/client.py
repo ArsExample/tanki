@@ -31,6 +31,10 @@ class Client:
         data = self.sock.recv(1024).decode()
         return data
 
+    def send_msg(self, msg):
+        to_send = msg + "|"
+        self.sock.send(to_send.encode())
+
     def recieve_loop(self):
         while not self.stop_recieve_loop:
             data = self.sock.recv(1024).decode()
@@ -39,5 +43,3 @@ class Client:
         self.stop_recieve_loop = False
         print("Recieving stopped")
 
-    def send_msg(self, msg):
-        self.sock.send(msg.encode())

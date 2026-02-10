@@ -39,7 +39,9 @@ class Play_state:
 
     def update(self):
         while not self.client.msg_queue.empty():
-            d = json.loads(self.client.msg_queue.get())
+            d = self.client.msg_queue.get()
+            print(d)
+            d = json.loads(d)
             if d["class"] == "player":
                 self.player2.move = d["move"]
             # self.player2.rect.x = int(d[0])
