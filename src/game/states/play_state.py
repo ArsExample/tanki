@@ -43,7 +43,7 @@ class Play_state:
             for i in d.split("|"):
                 if i != "":
                     print(i)
-                    i = json.loads(d)
+                    i = json.loads(i)
                     if i["class"] == "player":
                         self.player2.move = i["move"]
                     elif i["class"] == "bullet":
