@@ -103,7 +103,7 @@ class Play_state:
                 }
                 self.client.send_msg(json.dumps(data))
 
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_r:
                 self.bullets.add(Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction))
                 data = {
                     "class": "bullet",
