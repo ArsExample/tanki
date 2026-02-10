@@ -9,13 +9,14 @@ from ..objects import *
 class Play_state:
     def __init__(self):
         self.players = pygame.sprite.Group()
-        self.player1_group = pygame.sprite.Group()
-        self.player2_group = pygame.sprite.Group()
         self.player = Player(300, 300)
         self.player2 = Player(1200, 300, color=(0, 0, 255))
         self.shadow = Player(300, 300)
         self.players.add(self.player)
         self.players.add(self.player2)
+
+        self.player1_group = pygame.sprite.GroupSingle()
+        self.player2_group = pygame.sprite.GroupSingle()
         self.player1_group.add(self.player)
         self.player2_group.add(self.player2)
 

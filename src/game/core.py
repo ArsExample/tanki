@@ -8,7 +8,8 @@ class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
-        self.current_state = Play_state()
+        # self.current_state = Play_state()
+        self.current_state = Menu_state(self.change_state)
 
     def run(self):
         running = True
@@ -28,3 +29,6 @@ class Game:
             self.current_state.draw(self.screen)
 
             pygame.display.flip()
+
+    def change_state(self, state):
+        self.current_state = state
