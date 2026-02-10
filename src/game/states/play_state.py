@@ -10,7 +10,7 @@ class Play_state:
     def __init__(self):
         self.players = pygame.sprite.Group()
         self.player = Player(300, 300)
-        self.player2 = Player(1200, 300, color=(0, 0, 255))
+        self.player2 = Player(1200, 300, color=(0, 0, 255), second_player=True)
         self.shadow = Player(300, 300)
         self.players.add(self.player)
         self.players.add(self.player2)

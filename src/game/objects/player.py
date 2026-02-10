@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.directions = ["none", "left", "right", "up", "down"]
         self.move = self.directions[0]
         self.direction = "up"
+        self.velocity = int(SQUARE_SIZE / 10)
         self.velX = 0
         self.velY = 0
         self.second_player = second_player
@@ -23,20 +24,20 @@ class Player(pygame.sprite.Sprite):
             self.velX = 0
             self.velY = 0
         elif self.move == self.directions[1]:
-            self.velX = -5
+            self.velX = -self.velocity
             self.velY = 0
             self.direction = self.directions[1]
         elif self.move == self.directions[2]:
-            self.velX = 5
+            self.velX = self.velocity
             self.velY = 0
             self.direction = self.directions[2]
         elif self.move == self.directions[3]:
             self.velX = 0
-            self.velY = -5
+            self.velY = -self.velocity
             self.direction = self.directions[3]
         elif self.move == self.directions[4]:
             self.velX = 0
-            self.velY = 5
+            self.velY = self.velocity
             self.direction = self.directions[4]
 
         if not self.second_player:
