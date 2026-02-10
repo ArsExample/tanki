@@ -9,11 +9,15 @@ from ..objects import *
 class Play_state:
     def __init__(self):
         self.players = pygame.sprite.Group()
+        self.player1_group = pygame.sprite.Group()
+        self.player2_group = pygame.sprite.Group()
         self.player = Player(300, 300)
-        self.player2 = Player(1200, 300, color=(0, 0, 255), second_player=True)
+        self.player2 = Player(1200, 300, color=(0, 0, 255))
         self.shadow = Player(300, 300)
         self.players.add(self.player)
         self.players.add(self.player2)
+        self.player1_group.add(self.player)
+        self.player2_group.add(self.player2)
 
         self.walls = pygame.sprite.Group()
         self.wall1 = Wall(150, 150)
@@ -25,7 +29,8 @@ class Play_state:
         self.walls.add(self.wall3)
         self.walls.add(self.wall4)
 
-        self.bullets = pygame.sprite.Group()
+        self.bullets1 = pygame.sprite.Group()
+        self.bullets2 = pygame.sprite.Group()
 
         # network
         self.client = client.Client()
@@ -42,21 +47,24 @@ class Play_state:
             d = self.client.msg_queue.get()
             for i in d.split("|"):
                 if i != "":
-                    print(i)
                     i = json.loads(i)
                     if i["class"] == "player":
                         self.player2.move = i["move"]
                     elif i["class"] == "bullet":
-                        self.bullets.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, i["move"]))
+                        self.bullets2.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, i["move"]))
 
             # self.player2.rect.x = int(d[0])
             # self.player2.rect.y = int(d[1])
 
         self.player.update(self.walls, self.shadow)
         self.player2.update(self.walls, self.shadow)
-        self.bullets.update()
+        self.bullets1.update()
+        self.bullets2.update()
 
-        pygame.sprite.groupcollide(self.bullets, self.walls, True, False)  # тут типа col = groupcollide и внутри должны быть спрайты
+        pygame.sprite.groupcollide(self.bullets1, self.walls, True, False)  
+        pygame.sprite.groupcollide(self.bullets2, self.walls, True, False)  
+        collided = pygame.sprite.groupcollide(self.player1_group, self.walls, True, True)  
+        print(collided)
 
         # msg = str(self.player.rect.x) + "," + str(self.player.rect.y)
         # self.client.send_msg(msg)
@@ -65,7 +73,8 @@ class Play_state:
         screen.fill((0, 0, 0))
 
         self.walls.draw(screen)
-        self.bullets.draw(screen)
+        self.bullets1.draw(screen)
+        self.bullets2.draw(screen)
         
         for i in range(32):
             pygame.draw.line(screen, (255, 255, 255), (SQUARE_SIZE*(i+1), 0), (SQUARE_SIZE*(i+1), HEIGHT), 1)
@@ -106,7 +115,7 @@ class Play_state:
                 self.client.send_msg(json.dumps(data))
 
             if event.key == pygame.K_r:
-                self.bullets.add(Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction))
+                self.bullets1.add(Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction))
                 data = {
                     "class": "bullet",
                     "move": self.player.direction
