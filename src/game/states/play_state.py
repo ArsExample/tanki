@@ -40,12 +40,14 @@ class Play_state:
     def update(self):
         while not self.client.msg_queue.empty():
             d = self.client.msg_queue.get()
-            print(d)
-            d = json.loads(d)
-            if d["class"] == "player":
-                self.player2.move = d["move"]
-            elif d["class"] == "bullet":
-                self.bullets.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, d["move"]))
+            for i in d.split("|"):
+                if i != "":
+                    print(i)
+                    i = json.loads(d)
+                    if d["class"] == "player":
+                        self.player2.move = d["move"]
+                    elif d["class"] == "bullet":
+                        self.bullets.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, d["move"]))
 
             # self.player2.rect.x = int(d[0])
             # self.player2.rect.y = int(d[1])
