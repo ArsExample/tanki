@@ -44,6 +44,9 @@ class Play_state:
             d = json.loads(d)
             if d["class"] == "player":
                 self.player2.move = d["move"]
+            elif d["class"] == "bullet":
+                self.bullets.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, d["move"]))
+
             # self.player2.rect.x = int(d[0])
             # self.player2.rect.y = int(d[1])
 
@@ -102,6 +105,11 @@ class Play_state:
 
             if event.key == pygame.K_SPACE:
                 self.bullets.add(Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction))
+                data = {
+                    "class": "bullet",
+                    "move": self.player.direction
+                }
+                self.client.send_msg(json.dumps(data))
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
                 if self.player.move == self.player.directions[3]:
