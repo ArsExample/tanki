@@ -44,10 +44,10 @@ class Play_state:
                 if i != "":
                     print(i)
                     i = json.loads(d)
-                    if d["class"] == "player":
-                        self.player2.move = d["move"]
-                    elif d["class"] == "bullet":
-                        self.bullets.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, d["move"]))
+                    if i["class"] == "player":
+                        self.player2.move = i["move"]
+                    elif i["class"] == "bullet":
+                        self.bullets.add(Bullet(self.player2.rect.centerx, self.player2.rect.centery, i["move"]))
 
             # self.player2.rect.x = int(d[0])
             # self.player2.rect.y = int(d[1])
