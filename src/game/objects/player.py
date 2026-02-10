@@ -2,7 +2,7 @@ import pygame
 from config import SQUARE_SIZE
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y, color=(0, 255, 0)):
+    def __init__(self, x, y, color=(0, 255, 0), second_player=False):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE))
         self.image.fill(color)
@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = "up"
         self.velX = 0
         self.velY = 0
+        self.second_player = second_player
         
         
     def update(self, walls, shadow):
@@ -38,7 +39,11 @@ class Player(pygame.sprite.Sprite):
             self.velY = 5
             self.direction = self.directions[4]
 
-        if not self.check_col(walls, shadow):
+        if not self.second_player:
+            if not self.check_col(walls, shadow):
+                self.rect.x += self.velX
+                self.rect.y += self.velY
+        else:
             self.rect.x += self.velX
             self.rect.y += self.velY
 

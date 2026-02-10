@@ -39,17 +39,20 @@ class Play_state:
 
     def update(self):
         while not self.client.msg_queue.empty():
-            d = self.client.msg_queue.get().split(",")
-            self.player2.rect.x = int(d[0])
-            self.player2.rect.y = int(d[1])
+            d = json.loads(self.client.msg_queue.get())
+            if d["class"] == "player":
+                self.player2.move = d["move"]
+            # self.player2.rect.x = int(d[0])
+            # self.player2.rect.y = int(d[1])
 
         self.player.update(self.walls, self.shadow)
+        self.player2.update(self.walls, self.shadow)
         self.bullets.update()
 
         pygame.sprite.groupcollide(self.bullets, self.walls, True, False)  # тут типа col = groupcollide и внутри должны быть спрайты
 
-        msg = str(self.player.rect.x) + "," + str(self.player.rect.y)
-        self.client.send_msg(msg)
+        # msg = str(self.player.rect.x) + "," + str(self.player.rect.y)
+        # self.client.send_msg(msg)
         
     def draw(self, screen):
         screen.fill((0, 0, 0))
@@ -68,12 +71,32 @@ class Play_state:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
                 self.player.move = self.player.directions[3]
+                data = {
+                    "class": "player",
+                    "move": "up"
+                }
+                self.client.send_msg(json.dumps(data))
             elif event.key == pygame.K_a:
                 self.player.move = self.player.directions[1]
+                data = {
+                    "class": "player",
+                    "move": "left"
+                }
+                self.client.send_msg(json.dumps(data))
             elif event.key == pygame.K_s:
                 self.player.move = self.player.directions[4]
+                data = {
+                    "class": "player",
+                    "move": "down"
+                }
+                self.client.send_msg(json.dumps(data))
             elif event.key == pygame.K_d:
                 self.player.move = self.player.directions[2]
+                data = {
+                    "class": "player",
+                    "move": "right"
+                }
+                self.client.send_msg(json.dumps(data))
 
             if event.key == pygame.K_SPACE:
                 self.bullets.add(Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction))
@@ -81,12 +104,32 @@ class Play_state:
             if event.key == pygame.K_w:
                 if self.player.move == self.player.directions[3]:
                     self.player.move = self.player.directions[0]
+                    data = {
+                        "class": "player",
+                        "move": "none"
+                    }
+                    self.client.send_msg(json.dumps(data))
             elif event.key == pygame.K_a:
                 if self.player.move == self.player.directions[1]:
                     self.player.move = self.player.directions[0]
+                    data = {
+                        "class": "player",
+                        "move": "none"
+                    }
+                    self.client.send_msg(json.dumps(data))
             elif event.key == pygame.K_s:
                 if self.player.move == self.player.directions[4]:
                     self.player.move = self.player.directions[0]
+                    data = {
+                        "class": "player",
+                        "move": "none"
+                    }
+                    self.client.send_msg(json.dumps(data))
             elif event.key == pygame.K_d:
                 if self.player.move == self.player.directions[2]:
                     self.player.move = self.player.directions[0]
+                    data = {
+                        "class": "player",
+                        "move": "none"
+                    }
+                    self.client.send_msg(json.dumps(data))
