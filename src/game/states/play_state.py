@@ -3,7 +3,7 @@ import pygame
 import json
 
 from network import client
-from config import WIDTH, HEIGHT
+from config import WIDTH, HEIGHT, SQUARE_SIZE
 from ..objects import *
 
 class Play_state:
@@ -68,9 +68,9 @@ class Play_state:
         self.bullets.draw(screen)
         
         for i in range(32):
-            pygame.draw.line(screen, (255, 255, 255), (50*(i+1), 0), (50*(i+1), HEIGHT), 1)
+            pygame.draw.line(screen, (255, 255, 255), (SQUARE_SIZE*(i+1), 0), (SQUARE_SIZE*(i+1), HEIGHT), 1)
         for i in range(18):
-            pygame.draw.line(screen, (255, 255, 255), (0, 50*(i+1)), (WIDTH, 50*(i+1)), 1)
+            pygame.draw.line(screen, (255, 255, 255), (0, SQUARE_SIZE*(i+1)), (WIDTH, SQUARE_SIZE*(i+1)), 1)
 
         self.players.draw(screen)
 
